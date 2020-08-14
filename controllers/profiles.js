@@ -1,4 +1,4 @@
-const express = require('express')
+const path = require('path')
 const asyncHandler = require('./../middleware/async')
 const ErrorResponce = require('./../utils/errorResponse')
 
@@ -31,12 +31,59 @@ exports.getSingleProfile = asyncHandler(async (req, res, next) => {
 exports.getMe = asyncHandler(async (req, res, next) => {
 	const profile = await Profile.findOne({ user: req.user.id })
 
+	if (!profile) {
+		return next(new ErrorResponce('Unauthorized to get my profile...', 401))
+	}
+
 	res.status(200).json({ success: true, data: profile })
 })
 
-// @route   POST api/profile/me/photo
+// @route   PUT api/profile/me/photo
 // @desc    Upload photo for profile
 // @access  Private
+exports.uploadProfilePhoto = asyncHandler(async (req, res, next) => {
+	let profile = await Profile.findOne({ user: req.user.id })
+
+	if (!profile) {
+		return next(new ErrorResponce('Unauthorized to upload photo...', 401))
+	}
+
+	if (!req.files) {
+		return next(new ErrorResponce('Please, add a photo...', 400))
+	}
+
+	let file = req.files.file
+
+	if (!file.mimetype.startsWith('image')) {
+		return next(new ErrorResponce('Oops, its not a photo...', 400))
+	}
+
+	if (file.size > process.env.MAX_FILE_UPLOAD) {
+		return next(
+			new ErrorResponce(
+				`Please, upload img less than ${process.env.MAX_FILE_UPLOAD}`,
+				400
+			)
+		)
+	}
+
+	file.name = `photo_${profile._id}${path.parse(file.name).ext}`
+
+	file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+		if (err) {
+			console.error(err)
+			return next(new ErrorResponce(`Problem with file upload`, 400))
+		}
+
+		profile = await Profile.findOneAndUpdate(
+			{ user: req.user.id },
+			{ avatar: file.name },
+			{ new: true, runValidators: true }
+		)
+
+		res.status(200).json({ success: true, data: profile.avatar })
+	})
+})
 
 // @route   POST api/profile/
 // @desc    Create my profile

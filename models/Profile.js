@@ -41,6 +41,10 @@ const ProfileSchema = mongoose.Schema({
 			type: String,
 		},
 	},
+	avatar: {
+		type: String,
+		default: 'no-photo.jpg',
+	},
 })
 
 module.exports = mongoose.model('Profile', ProfileSchema)

@@ -1,3 +1,14 @@
+Instagram Look Like app:
+Here is the main goal of this app is to clear out the current level of owning such technologies,
+like React-Redux, NodeJs, MongoDB, Express with all the following tools along the way.
+
+The architecture of app considering:
+
+1. Have Logging, Registrating,
+2. Possibility to create your own profile, include main photo to it. Check other's profiles.
+3. Create posts with Picture, text, comments and likes. No dislikes awailable.
+4. Check Tape of all Posts of all users/ or only some user's posts.
+
 This project contains the following structure:
 
 // Template description:
@@ -16,17 +27,3 @@ This project contains the following structure:
 // /routes for routing
 // /middlewares for async, error, auth handlers and so on
 // /utils for another workflow .js files
-
-How to begin using:
-
-1. npm install
-2. Connect to Mongo in atlas
-3. In folder /config, create file config.env
-4. Set up config.env with following lines of code:
-   NODE_ENV=development
-   PORT=5000
-   MONGO_URI=Your_link_to_connect_db //Connect DB
-   JWT_SECRET=somerandomtexttocreatejwt
-   JWT_EXPIRE=30d
-   JWT_COOKIE_EXPIRE=30
-5. Done! Be free to use auth, private routes and create some REST APIs

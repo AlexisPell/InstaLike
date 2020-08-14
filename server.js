@@ -1,7 +1,9 @@
 const express = require('express')
+const path = require('path')
 const dotenv = require('dotenv')
 const colors = require('colors')
 const morgan = require('morgan')
+const fileupload = require('express-fileupload')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
 const xss = require('xss-clean')
@@ -23,9 +25,16 @@ mongoDB()
 // Route files
 const auth = require('./routes/auth')
 const profiles = require('./routes/profiles')
+const posts = require('./routes/posts')
 
 // Init middleware
 app.use(express.json())
+
+// Cookie parser
+app.use(cookieParser())
+
+// File uploading // req.files.file
+app.use(fileupload())
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
@@ -55,12 +64,13 @@ app.use(hpp())
 // Enable CORS
 app.use(cors())
 
-// Cookie parser
-app.use(cookieParser())
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 // Mounte routes
 app.use('/api/auth', auth)
 app.use('/api/profile', profiles)
+app.use('/api/post', posts)
 
 // Error Handler
 app.use(errorHandler)
