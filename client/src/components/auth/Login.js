@@ -1,4 +1,8 @@
 import React, { useState } from 'react'
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { login } from './../../actions/auth'
+import { setAlert } from './../../actions/alert'
 import { Grid, TextField, makeStyles, Button } from '@material-ui/core'
 
 const useStyles = makeStyles((theme) => ({
@@ -17,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const Register = () => {
+const Login = ({ login, setAlert, isAuthenticated }) => {
 	const classes = useStyles()
 	const { root, input, firstInput } = classes
 	const [form, setForm] = useState({
@@ -32,7 +36,14 @@ const Register = () => {
 
 	const onSubmit = (e) => {
 		e.preventDefault()
-		// Do it lil later with error Handling
+		login(email, password)
+		if ((email, password.length > 5)) {
+			setAlert('Logged in!', 'success')
+		}
+	}
+
+	if (isAuthenticated === true) {
+		return <Redirect to='/myprofile' />
 	}
 
 	return (
@@ -65,4 +76,8 @@ const Register = () => {
 	)
 }
 
-export default Register
+const mapStateToProps = (state) => ({
+	isAuthenticated: state.auth.isAuthenticated,
+})
+
+export default connect(mapStateToProps, { login, setAlert })(Login)

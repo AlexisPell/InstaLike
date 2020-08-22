@@ -1,5 +1,6 @@
 const asyncHandler = require('./../middleware/async')
 const ErrorResponse = require('./../utils/errorResponse')
+const { check, validationResult } = require('express-validator')
 
 const User = require('./../models/User')
 const ErrorResponce = require('./../utils/errorResponse')
@@ -7,13 +8,29 @@ const ErrorResponce = require('./../utils/errorResponse')
 // @desc    Register user
 // @route   POST /api/v1/auth/register
 // @access  Public
-exports.register = asyncHandler(async (req, res, next) => {
-	const { name, email, password } = req.body
+exports.register =
+	([
+		check('name', 'Name is required').not().isEmpty(),
+		check('email', 'Please, include a valid email').isEmail(),
+		check(
+			'password',
+			'Please, enter a password with 6 or more characters'
+		).isLength({
+			min: 6,
+		}),
+	],
+	asyncHandler(async (req, res, next) => {
+		const errors = validationResult(req)
+		if (!errors.isEmpty()) {
+			return res.status(400).json({ errors: errors.array() })
+		}
 
-	const user = await User.create({ name, email, password })
+		const { name, email, password } = req.body
 
-	sendTokenResponce(user, 200, res)
-})
+		const user = await User.create({ name, email, password })
+
+		sendTokenResponce(user, 200, res)
+	}))
 
 // @desc    Login user
 // @route   POST /api/v1/auth/login
@@ -64,7 +81,8 @@ const sendTokenResponce = (user, statusCode, res) => {
 		expires: new Date(
 			Date.now() + process.env.JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
 		),
-		httpOnly: true,
+		// Turn on if no access from front is going on for protection from xss
+		// httpOnly: true,
 	}
 
 	if (process.env.NODE_ENV === 'production') {

@@ -8,6 +8,7 @@ const useStyles = makeStyles((theme) => ({
 	title: {
 		marginTop: theme.spacing(4),
 		textTransform: 'uppercase',
+		color: '#990c48',
 	},
 	subtitle: {
 		marginTop: theme.spacing(4),
@@ -29,7 +30,7 @@ const Landing = () => {
 	return (
 		<Grid container item xs={12}>
 			<Typography
-				variant='h3'
+				variant='h4'
 				color='primary'
 				className={classes.title}
 				align='center'
