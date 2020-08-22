@@ -1,8 +1,9 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { Link, Redirect } from 'react-router-dom'
 import ExitToAppIcon from '@material-ui/icons/ExitToApp'
 import HowToRegIcon from '@material-ui/icons/HowToReg'
 import { Grid, Typography, Button, makeStyles } from '@material-ui/core'
-import { Link } from 'react-router-dom'
 
 const useStyles = makeStyles((theme) => ({
 	title: {
@@ -24,8 +25,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }))
 
-const Landing = () => {
+const Landing = ({ auth: { isAuthenticated } }) => {
 	const classes = useStyles()
+
+	if (isAuthenticated) {
+		return <Redirect to='my-profile' />
+	}
 
 	return (
 		<Grid container item xs={12}>
@@ -62,4 +67,8 @@ const Landing = () => {
 	)
 }
 
-export default Landing
+const mapStateToProps = (state) => ({
+	auth: state.auth,
+})
+
+export default connect(mapStateToProps, {})(Landing)

@@ -40,7 +40,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 		e.preventDefault()
 
 		if (password !== password2 && password.length) {
-			setAlert('Passwords do not match', 'error')
+			setAlert('Passwords do not match', 'warning')
 		} else if (password.length < 6) {
 			setAlert('Password should contain 6 or more chars', 'warning')
 		} else if (name.length < 2) {
@@ -49,13 +49,13 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 			setAlert('email is invalid', 'error')
 		} else {
 			register({ name, email, password })
-			setAlert('You have successfully registered!', 'success')
 			setForm({ name: '', email: '', password: '', password2: '' })
 		}
 	}
 
 	if (isAuthenticated === true) {
-		return <Redirect to='/myprofile' />
+		setAlert('You have successfully registered!', 'success')
+		return <Redirect to='/my-profile' />
 	}
 
 	return (

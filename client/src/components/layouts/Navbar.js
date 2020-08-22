@@ -107,7 +107,7 @@ const Navbar = ({ logout, auth: { isAuthenticated, loading } }) => {
 				onClose={onToggle}
 			>
 				<MenuItem onClick={onToggle}>
-					<Link to='/myprofile' className={classes.link}>
+					<Link to='/my-profile' className={classes.link}>
 						My profile
 					</Link>
 				</MenuItem>

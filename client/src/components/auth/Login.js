@@ -37,13 +37,11 @@ const Login = ({ login, setAlert, isAuthenticated }) => {
 	const onSubmit = (e) => {
 		e.preventDefault()
 		login(email, password)
-		if ((email, password.length > 5)) {
-			setAlert('Logged in!', 'success')
-		}
 	}
 
 	if (isAuthenticated === true) {
-		return <Redirect to='/myprofile' />
+		setAlert('Logged in!', 'success')
+		return <Redirect to='/my-profile' />
 	}
 
 	return (

@@ -7,6 +7,7 @@ const useStyles = makeStyles((theme) => ({
 	root: {
 		width: '100%',
 		marginTop: theme.spacing(3),
+		marginBottom: theme.spacing(3),
 	},
 	alertBlock: {
 		marginTop: theme.spacing(2),

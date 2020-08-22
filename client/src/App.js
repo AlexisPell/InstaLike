@@ -9,15 +9,17 @@ import store from './store'
 import PrivateRoute from './components/routing/PrivateRoute'
 import Alert from './components/layouts/Alert'
 import Navbar from './components/layouts/Navbar'
-import Landing from './components/pages/Landing'
+import Landing from './components/layouts/Landing'
 import Login from './components/auth/Login'
 import Register from './components/auth/Register'
-import Tape from './components/pages/Tape'
+import Tape from './components/posts/Tape'
 import MyProfile from './components/profiles/MyProfile'
+import CreateProfile from './components/profiles/CreateProfile'
+import MyPosts from './components/posts/MyPosts'
 
 const useStyles = makeStyles((theme) => ({
 	root: {
-		height: '100vh',
+		minHeight: '100vh',
 	},
 }))
 
@@ -49,7 +51,13 @@ const App = () => {
 							render={(props) => <Register {...props} />}
 						/>
 						<Route exact path='/tape' render={(props) => <Tape {...props} />} />
-						<PrivateRoute exact path='/myprofile' component={MyProfile} />
+						<PrivateRoute exact path='/my-profile' component={MyProfile} />
+						<PrivateRoute
+							exact
+							path='/create-profile'
+							component={CreateProfile}
+						/>
+						<PrivateRoute exact path='/my-posts' component={MyPosts} />
 					</Switch>
 				</Grid>
 			</Container>

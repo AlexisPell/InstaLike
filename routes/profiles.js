@@ -4,7 +4,6 @@ const {
 	getSingleProfile,
 	getMe,
 	createProfile,
-	updateProfile,
 	deleteProfile,
 	uploadProfilePhoto,
 } = require('./../controllers/profiles')
@@ -19,13 +18,13 @@ const router = express.Router()
 // Re-routing
 router.use('/:profileId/post', postsRouter)
 
-router.route('/').get(getAllProfiles).post(protect, createProfile)
+router
+	.route('/')
+	.get(getAllProfiles)
+	.post(protect, createProfile)
+	.delete(protect, deleteProfile)
 router.route('/me').get(protect, getMe)
 router.route('/me/photo').put(protect, uploadProfilePhoto)
-router
-	.route('/:id')
-	.get(getSingleProfile)
-	.put(protect, updateProfile)
-	.delete(protect, deleteProfile)
+router.route('/:id').get(getSingleProfile)
 
 module.exports = router
